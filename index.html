@@ -1,1 +1,2057 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>HEKSEL STUDIO // CORE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           RESET + VARIABLES — METALLIC CYBERPUNK LUXURY
+        ═══════════════════════════════════════════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-deep: #08080d;
+            --glass: rgba(12, 12, 22, 0.78);
+            --border-fine: rgba(255, 255, 255, 0.06);
+            --cyan: #00f0ff;
+            --cyan-glow: rgba(0, 240, 255, 0.45);
+            --purple: #b45eff;
+            --purple-glow: rgba(180, 94, 255, 0.40);
+            --gold: #c9a84c;
+            --gold-light: #f5d97f;
+            --metallic-start: #e2e8f0;
+            --metallic-mid: #94a3b8;
+            --metallic-end: #475569;
+            --card-bg: rgba(14, 14, 24, 0.88);
+            --transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            --shadow-heavy: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-deep);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--cyan);
+            border-radius: 4px;
+            box-shadow: 0 0 8px var(--cyan-glow);
+        }
+
+        /* ── custom cursor ── */
+        .cursor-dot,
+        .cursor-ring {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            transition: all 0.15s ease;
+        }
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 14px var(--cyan-glow);
+            transform: translate(-50%, -50%);
+        }
+        .cursor-ring {
+            width: 38px;
+            height: 38px;
+            border: 1.5px solid rgba(0, 240, 255, 0.40);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: 0.2s;
+        }
+        @media (pointer: coarse) {
+            .cursor-dot,
+            .cursor-ring {
+                display: none;
+            }
+            body {
+                cursor: auto;
+            }
+        }
+
+        /* ── cyber grid bg ── */
+        .cyber-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background:
+                radial-gradient(ellipse 70% 60% at 15% 20%, rgba(0, 240, 255, 0.035), transparent 70%),
+                radial-gradient(ellipse 60% 70% at 85% 85%, rgba(180, 94, 255, 0.04), transparent 70%),
+                var(--bg-deep);
+        }
+        .cyber-bg::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image:
+                linear-gradient(rgba(0, 240, 255, 0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.018) 1px, transparent 1px);
+            background-size: 70px 70px;
+            animation: gridDrift 55s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes gridDrift {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(4%, 4%);
+            }
+        }
+
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--border-fine);
+            border-radius: 28px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .logo-text,
+        .btn,
+        .nav-link {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+        }
+        .mono {
+            font-family: 'Space Mono', monospace;
+        }
+        .glow-cyan {
+            color: var(--cyan);
+            text-shadow: 0 0 12px var(--cyan-glow);
+        }
+        .glow-purple {
+            color: var(--purple);
+            text-shadow: 0 0 12px var(--purple-glow);
+        }
+        .metallic-gradient {
+            background: linear-gradient(135deg, var(--metallic-start) 0%, var(--metallic-mid) 50%, var(--metallic-end) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: 1.5px solid rgba(255, 255, 255, 0.10);
+            background: rgba(255, 255, 255, 0.03);
+            color: #ddd;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.15), transparent 70%);
+            opacity: 0;
+            transition: 0.4s;
+            pointer-events: none;
+        }
+        .btn:hover::after {
+            opacity: 1;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 240, 255, 0.35);
+            box-shadow: 0 0 24px rgba(0, 240, 255, 0.10);
+            color: #fff;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            border: none;
+            color: #08080d;
+            font-weight: 800;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 40px var(--cyan-glow), 0 0 80px rgba(180, 94, 255, 0.20);
+            transform: translateY(-3px);
+            color: #08080d;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border: none;
+            color: #08080d;
+        }
+        .btn-gold:hover {
+            box-shadow: 0 0 40px rgba(201, 168, 76, 0.40);
+            transform: translateY(-3px);
+        }
+
+        /* ──────────────────────────────────────────────────────────────
+           LAYOUT
+        ────────────────────────────────────────────────────────────── */
+        .studio-dashboard {
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 20px 28px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ═══ HEADER — brand + controls + AI status ═══ */
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 28px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-fine);
+            border-radius: 60px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px 24px;
+        }
+
+        .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .brand-logo img {
+            height: 44px;
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.10));
+            transition: filter 0.4s ease;
+        }
+        .brand-logo img:hover {
+            filter: drop-shadow(0 0 24px rgba(0, 240, 255, 0.25));
+        }
+
+        .brand-text {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 0.12em;
+            background: linear-gradient(135deg, var(--metallic-start), var(--metallic-mid), var(--metallic-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+        .brand-text small {
+            font-weight: 400;
+            font-size: 0.5rem;
+            letter-spacing: 0.3em;
+            opacity: 0.5;
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.30);
+            display: block;
+            margin-top: -2px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+        .header-clock {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+            color: rgba(255, 255, 255, 0.55);
+            background: rgba(0, 0, 0, 0.35);
+            padding: 6px 18px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header-clock .ms {
+            color: var(--cyan);
+            font-size: 0.65rem;
+            opacity: 0.7;
+            min-width: 36px;
+            text-align: right;
+        }
+        .latency-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.35);
+            letter-spacing: 0.08em;
+        }
+        .latency-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+            animation: pulseDot 1.8s ease-in-out infinite;
+        }
+        @keyframes pulseDot {
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: scale(0.9);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+        .latency-value {
+            color: rgba(255, 255, 255, 0.55);
+            min-width: 44px;
+        }
+
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.45);
+            background: rgba(0, 240, 255, 0.04);
+            padding: 6px 18px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 240, 255, 0.12);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.02);
+        }
+        .ai-status .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff88;
+            box-shadow: 0 0 16px #00ff88;
+            animation: pulseDot 1.8s ease-in-out infinite;
+        }
+        .ai-status .status-text {
+            color: var(--cyan);
+            font-weight: 700;
+        }
+
+        /* ═══ TIER SECTION ═══ */
+        .tier-section {
+            background: var(--glass);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--border-fine);
+            border-radius: 32px;
+            padding: 28px 32px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .tier-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 70% 50%, rgba(0, 240, 255, 0.04), transparent 70%);
+            pointer-events: none;
+        }
+        .tier-message {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+            min-width: 200px;
+        }
+        .tier-message .pulse-light {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 20px var(--cyan-glow), 0 0 60px rgba(0, 240, 255, 0.15);
+            animation: pulseLight 2.4s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes pulseLight {
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(0.85);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.25);
+            }
+        }
+        .tier-message p {
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        .tier-message p em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        .tier-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .tier-toggle {
+            display: flex;
+            gap: 0;
+            background: rgba(0, 0, 0, 0.40);
+            border-radius: 60px;
+            padding: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+        }
+        .tier-toggle button {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 8px 24px;
+            border: none;
+            border-radius: 40px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .tier-toggle button.active {
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            color: #08080d;
+            box-shadow: 0 0 24px var(--cyan-glow);
+        }
+        .tier-toggle button:not(.active):hover {
+            color: #fff;
+        }
+
+        .btn-bug-control {
+            background: rgba(180, 94, 255, 0.08);
+            border-color: rgba(180, 94, 255, 0.25);
+            color: var(--purple);
+            padding: 8px 20px;
+            font-size: 0.65rem;
+        }
+        .btn-bug-control:hover {
+            background: rgba(180, 94, 255, 0.15);
+            border-color: var(--purple);
+            box-shadow: 0 0 24px var(--purple-glow);
+        }
+
+        .btn-genesis {
+            background: rgba(0, 240, 255, 0.06);
+            border-color: rgba(0, 240, 255, 0.15);
+            color: var(--cyan);
+            padding: 8px 20px;
+            font-size: 0.65rem;
+        }
+        .btn-genesis:hover {
+            background: rgba(0, 240, 255, 0.12);
+            border-color: var(--cyan);
+            box-shadow: 0 0 24px var(--cyan-glow);
+        }
+
+        /* ═══ PROJECTS GRID ═══ */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+            margin-bottom: 36px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-fine);
+            border-radius: 28px;
+            padding: 24px 26px 26px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
+            opacity: 0;
+            transition: 0.4s;
+        }
+        .project-card:hover::before {
+            opacity: 1;
+        }
+        .project-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 240, 255, 0.20);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 240, 255, 0.05);
+        }
+        .project-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .project-card .client-name {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 0.02em;
+        }
+        .project-card .client-name .badge-tier {
+            font-size: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            background: rgba(0, 240, 255, 0.12);
+            color: var(--cyan);
+            padding: 2px 10px;
+            border-radius: 40px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .project-card .card-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 0.02em;
+        }
+        .project-card .progress-wrap {
+            margin: 14px 0 12px;
+        }
+        .project-card .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.35);
+            font-family: 'Space Mono', monospace;
+            margin-bottom: 6px;
+        }
+        .project-card .progress-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .project-card .progress-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+            box-shadow: 0 0 12px var(--cyan-glow);
+            transition: width 1s ease;
+            width: 0%;
+        }
+        .project-card .card-contact {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.30);
+            margin: 6px 0 12px;
+            letter-spacing: 0.04em;
+        }
+        .project-card .card-contact i {
+            margin-right: 6px;
+            color: var(--cyan);
+            opacity: 0.5;
+        }
+
+        .agents-area {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 16px;
+            padding: 12px 14px;
+            margin: 12px 0 16px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .agents-area .agents-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.20);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .agents-area .agent-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.50);
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .agents-area .agent-item:last-child {
+            border-bottom: none;
+        }
+        .agents-area .agent-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .agent-status.idle {
+            background: #555;
+            box-shadow: none;
+        }
+        .agent-status.working {
+            background: #00ff88;
+            box-shadow: 0 0 12px #00ff88;
+            animation: pulseDot 1.2s ease-in-out infinite;
+        }
+        .agent-status.done {
+            background: var(--gold);
+            box-shadow: 0 0 12px rgba(201, 168, 76, 0.40);
+        }
+        .agent-status.error {
+            background: #ff2d55;
+            box-shadow: 0 0 12px #ff2d55;
+            animation: pulseDot 0.8s ease-in-out infinite;
+        }
+
+        .project-card .card-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .project-card .card-actions .btn {
+            flex: 1;
+            min-width: 110px;
+            text-align: center;
+            font-size: 0.58rem;
+            padding: 8px 14px;
+        }
+        .btn-freemium {
+            border-color: rgba(0, 240, 255, 0.25);
+            color: var(--cyan);
+        }
+        .btn-freemium:hover {
+            background: rgba(0, 240, 255, 0.08);
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+        }
+        .btn-premium {
+            border-color: rgba(201, 168, 76, 0.30);
+            color: var(--gold-light);
+        }
+        .btn-premium:hover {
+            background: rgba(201, 168, 76, 0.08);
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(201, 168, 76, 0.15);
+        }
+
+        .status-tag {
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.1em;
+            padding: 3px 12px;
+            border-radius: 40px;
+            background: rgba(0, 240, 255, 0.06);
+            color: rgba(255, 255, 255, 0.30);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+        }
+        .status-tag.active {
+            color: var(--cyan);
+            border-color: rgba(0, 240, 255, 0.20);
+            background: rgba(0, 240, 255, 0.06);
+        }
+        .status-tag.preview {
+            color: var(--gold-light);
+            border-color: rgba(201, 168, 76, 0.30);
+            background: rgba(201, 168, 76, 0.08);
+        }
+        .status-tag.delivered {
+            color: #00ff88;
+            border-color: rgba(0, 255, 136, 0.25);
+            background: rgba(0, 255, 136, 0.06);
+        }
+
+        /* ═══ TICKETS PANEL ═══ */
+        .tickets-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9100;
+            background: rgba(0, 0, 0, 0.80);
+            backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .tickets-overlay.open {
+            display: flex;
+        }
+        .tickets-panel {
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            background: rgba(10, 10, 20, 0.97);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(0, 240, 255, 0.12);
+            border-radius: 32px;
+            padding: 32px 36px;
+            overflow-y: auto;
+            position: relative;
+        }
+        .tickets-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .tickets-panel .panel-header h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: 0.1em;
+        }
+        .tickets-panel .close-tickets {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.30);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 4px 8px;
+        }
+        .tickets-panel .close-tickets:hover {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+        .tickets-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .ticket-list {
+            background: rgba(0, 0, 0, 0.20);
+            border-radius: 20px;
+            padding: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .ticket-list h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.40);
+            margin-bottom: 12px;
+        }
+        .ticket-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            border-left: 3px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+        .ticket-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .ticket-item .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .ticket-item .ticket-client {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .ticket-item .ticket-urgency {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            padding: 2px 12px;
+            border-radius: 40px;
+            letter-spacing: 0.06em;
+            font-weight: 700;
+        }
+        .ticket-urgency.low {
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.20);
+            background: rgba(0, 255, 136, 0.06);
+        }
+        .ticket-urgency.medium {
+            color: var(--gold-light);
+            border: 1px solid rgba(201, 168, 76, 0.20);
+            background: rgba(201, 168, 76, 0.06);
+        }
+        .ticket-urgency.critical {
+            color: #ff2d55;
+            border: 1px solid rgba(255, 45, 85, 0.25);
+            background: rgba(255, 45, 85, 0.08);
+            animation: pulseCritical 1.2s ease-in-out infinite;
+        }
+        @keyframes pulseCritical {
+            0%,
+            100% {
+                box-shadow: 0 0 4px rgba(255, 45, 85, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 45, 85, 0.4);
+            }
+        }
+        .ticket-item .ticket-desc {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.50);
+            margin: 4px 0;
+        }
+        .ticket-item .ticket-url {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.20);
+            font-family: 'Space Mono', monospace;
+        }
+        .ticket-item .ticket-time {
+            font-size: 0.55rem;
+            color: rgba(255, 255, 255, 0.15);
+            font-family: 'Space Mono', monospace;
+            margin-top: 4px;
+        }
+        .ticket-form {
+            background: rgba(0, 0, 0, 0.20);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .ticket-form .form-group {
+            margin-bottom: 16px;
+        }
+        .ticket-form label {
+            display: block;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.45);
+            margin-bottom: 4px;
+        }
+        .ticket-form input,
+        .ticket-form select,
+        .ticket-form textarea {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            outline: none;
+            resize: vertical;
+        }
+        .ticket-form input:focus,
+        .ticket-form select:focus,
+        .ticket-form textarea:focus {
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(180, 94, 255, 0.08);
+        }
+        .ticket-form .btn-submit-ticket {
+            width: 100%;
+            padding: 12px;
+            border-radius: 60px;
+            border: none;
+            background: linear-gradient(135deg, var(--purple), var(--cyan));
+            color: #08080d;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .ticket-form .btn-submit-ticket:hover {
+            box-shadow: 0 0 40px var(--purple-glow);
+            transform: scale(1.01);
+        }
+
+        @media (max-width: 800px) {
+            .tickets-grid {
+                grid-template-columns: 1fr;
+            }
+            .tickets-panel {
+                padding: 24px 18px;
+            }
+        }
+
+        /* ═══ SIDEBAR ═══ */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: flex-end;
+            transition: 0.4s;
+        }
+        .sidebar-overlay.open {
+            display: flex;
+        }
+        .sidebar-panel {
+            width: 440px;
+            max-width: 92vw;
+            height: 100vh;
+            background: rgba(10, 10, 20, 0.97);
+            backdrop-filter: blur(24px);
+            border-left: 1px solid rgba(0, 240, 255, 0.12);
+            padding: 40px 32px 32px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-overlay.open .sidebar-panel {
+            transform: translateX(0);
+        }
+        .sidebar-panel h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+        }
+        .sidebar-panel .sub {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.30);
+            font-family: 'Space Mono', monospace;
+            margin-bottom: 28px;
+            letter-spacing: 0.08em;
+        }
+        .sidebar-panel .form-group {
+            margin-bottom: 20px;
+        }
+        .sidebar-panel label {
+            display: block;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.45);
+            margin-bottom: 6px;
+        }
+        .sidebar-panel input,
+        .sidebar-panel select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            outline: none;
+        }
+        .sidebar-panel input:focus,
+        .sidebar-panel select:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.08);
+        }
+        .sidebar-panel .btn-close-sidebar {
+            align-self: flex-end;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.30);
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 4px 8px;
+        }
+        .sidebar-panel .btn-close-sidebar:hover {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+        .sidebar-panel .btn-submit-client {
+            width: 100%;
+            margin-top: 12px;
+            padding: 14px;
+            border-radius: 60px;
+            border: none;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            color: #08080d;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .sidebar-panel .btn-submit-client:hover {
+            box-shadow: 0 0 40px var(--cyan-glow);
+            transform: scale(1.01);
+        }
+
+        .sidebar-trigger {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 8000;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 240, 255, 0.20);
+            color: var(--cyan);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+        .sidebar-trigger:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 30px var(--cyan-glow);
+            transform: scale(1.08) rotate(8deg);
+        }
+
+        /* ═══ SECRET OVERLAY ═══ */
+        .secret-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.06), rgba(180, 94, 255, 0.04), transparent 70%);
+        }
+        .secret-overlay.active {
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        .toast-secret {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            z-index: 99999;
+            background: rgba(10, 10, 22, 0.92);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 240, 255, 0.20);
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            color: #fff;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            pointer-events: none;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+        .toast-secret.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ═══ RESPONSIVE ═══ */
+        @media (max-width: 900px) {
+            .dashboard-header {
+                border-radius: 32px;
+                padding: 16px 20px;
+            }
+            .header-controls {
+                gap: 12px;
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .brand-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .tier-section {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 22px 24px;
+            }
+            .tier-message p {
+                font-size: 0.85rem;
+            }
+            .tier-controls {
+                justify-content: flex-start;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-panel {
+                width: 100%;
+                max-width: 100%;
+                border-left: none;
+                border-radius: 0;
+            }
+        }
+        @media (max-width: 500px) {
+            .studio-dashboard {
+                padding: 12px 12px 80px;
+            }
+            .dashboard-header {
+                border-radius: 24px;
+                padding: 12px 16px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .brand-group {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .brand-logo img {
+                height: 34px;
+            }
+            .brand-text {
+                font-size: 1rem;
+            }
+            .brand-text small {
+                font-size: 0.4rem;
+            }
+            .header-controls {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .ai-status {
+                font-size: 0.55rem;
+                padding: 4px 12px;
+            }
+            .tier-section {
+                padding: 18px 16px;
+                border-radius: 24px;
+            }
+            .tier-message p {
+                font-size: 0.75rem;
+            }
+            .tier-toggle button {
+                font-size: 0.6rem;
+                padding: 6px 16px;
+            }
+            .project-card {
+                padding: 18px 16px 20px;
+            }
+            .project-card .card-actions .btn {
+                min-width: 80px;
+                font-size: 0.5rem;
+                padding: 6px 10px;
+            }
+            .sidebar-trigger {
+                width: 48px;
+                height: 48px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 1.2rem;
+            }
+            .tickets-panel {
+                padding: 20px 16px;
+            }
+            .tickets-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .flex-grow {
+            flex: 1;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .op-5 {
+            opacity: 0.5;
+        }
+
+        /* ── loading shimmer ── */
+        .loading-shimmer {
+            animation: shimmer 1.5s ease-in-out infinite;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.02) 75%);
+            background-size: 200% 100%;
+            border-radius: 16px;
+        }
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── CURSOR ─── -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <!-- ─── BACKGROUND ─── -->
+    <div class="cyber-bg"></div>
+
+    <!-- ─── SECRET OVERLAY ─── -->
+    <div class="secret-overlay" id="secretOverlay"></div>
+
+    <!-- ─── TOAST ─── -->
+    <div class="toast-secret" id="secretToast">✦ SECRET MODE ACTIVATED ✦</div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+    DASHBOARD
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="studio-dashboard">
+
+        <!-- ─── HEADER ─── -->
+        <header class="dashboard-header">
+            <div class="brand-group">
+                <div class="brand-logo">
+                    <img src="https://chatgpt.com/backend-api/estuary/content?id=file_000000007f8c720ea5c20191b40e09e5&fn=logo%282%29.png&cd=attachment&ts=494893&p=fs&cid=1&sig=94b3200825358ff5795627ac9b0a8f7dc49fddec2e0c1d8fc35fd356c6c125c7&v=0"
+                    alt="Heksel Studio" />
+                </div>
+                <div class="brand-text">
+                    HEKSEL STUDIO
+                    <small>CORE ENGINE</small>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <div class="ai-status">
+                    <span class="pulse-dot"></span>
+                    <span>AI WORKERS</span>
+                    <span class="status-text">ACTIVE</span>
+                </div>
+
+                <div class="header-clock">
+                    <span id="clockDisplay">00:00:00</span>
+                    <span class="ms" id="msDisplay">.000</span>
+                </div>
+                <div class="latency-indicator">
+                    <span class="latency-dot"></span>
+                    <span>LAT</span>
+                    <span class="latency-value" id="latencyValue">12ms</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ─── TIER SECTION ─── -->
+        <section class="tier-section">
+            <div class="tier-message">
+                <span class="pulse-light"></span>
+                <p>
+                    <em>“If the preliminary version is like this,</em><br />
+                    <span style="font-weight:300; opacity:0.6;">imagine what the final version will be like.”</span>
+                </p>
+            </div>
+            <div class="tier-controls">
+                <button class="btn btn-bug-control" id="openTicketsBtn">🐞 BUG CONTROL</button>
+                <button class="btn btn-genesis" id="genesisInjectBtn">⚡ GENESIS INJECT</button>
+                <div class="tier-toggle" id="tierToggle">
+                    <button class="active" data-tier="freemium">FREMIUM</button>
+                    <button data-tier="premium">PREMIUM</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PROJECTS GRID ─── -->
+        <div class="projects-grid" id="projectsGrid">
+            <div class="glass-panel" style="grid-column:1/-1; padding:48px 20px; text-align:center; background:rgba(255,255,255,0.02);">
+                <p style="font-family:'Syne',sans-serif; font-weight:600; opacity:0.3; letter-spacing:0.1em;">Loading projects from Firestore...</p>
+                <div style="width:60px; height:4px; background:var(--cyan); border-radius:99px; margin:16px auto; box-shadow:0 0 20px var(--cyan-glow); animation:pulseLight 1.2s ease-in-out infinite;"></div>
+            </div>
+        </div>
+
+        <!-- ─── FOOTER ─── -->
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.03);">
+            <span style="font-family:'Space Mono',monospace; font-size:0.6rem; color:rgba(255,255,255,0.15); letter-spacing:0.1em;">
+                HEKSEL STUDIO v4.0 — AUTONOMOUS AI ENGINE · FIRESTORE REAL
+            </span>
+            <span style="font-family:'Space Mono',monospace; font-size:0.6rem; color:rgba(255,255,255,0.10);">
+                <span id="projectCount">0</span> active projects
+            </span>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+    TICKETS OVERLAY
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="tickets-overlay" id="ticketsOverlay">
+        <div class="tickets-panel">
+            <div class="panel-header">
+                <h2>🐞 BUG CONTROL & FEEDBACK CENTER</h2>
+                <button class="close-tickets" id="closeTicketsBtn">✕</button>
+            </div>
+            <div class="tickets-grid">
+                <div class="ticket-list" id="ticketList">
+                    <h3>OPEN TICKETS</h3>
+                    <div id="ticketsContainer">
+                        <div style="padding:20px; text-align:center; color:rgba(255,255,255,0.20); font-family:'Syne',sans-serif; font-size:0.8rem;">Loading tickets from Firestore...</div>
+                    </div>
+                </div>
+                <div class="ticket-form">
+                    <h3 style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.8rem; letter-spacing:0.08em; color:rgba(255,255,255,0.40); margin-bottom:16px;">REPORT NEW BUG</h3>
+                    <div class="form-group">
+                        <label>Client Name</label>
+                        <input type="text" id="ticketClient" placeholder="e.g., Mike" />
+                    </div>
+                    <div class="form-group">
+                        <label>Site URL</label>
+                        <input type="text" id="ticketUrl" placeholder="https://mike-site.com" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bug Description</label>
+                        <textarea id="ticketDesc" rows="3" placeholder="Describe the issue..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Urgency</label>
+                        <select id="ticketUrgency">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                    </div>
+                    <button class="btn-submit-ticket" id="submitTicketBtn">✦ SUBMIT TICKET</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+    SIDEBAR
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="sidebar-overlay" id="sidebarOverlay">
+        <div class="sidebar-panel">
+            <button class="btn-close-sidebar" id="closeSidebarBtn">✕</button>
+            <h2>✦ NEW CLIENT</h2>
+            <div class="sub">Firestore real — Heksel Imperium</div>
+
+            <div class="form-group">
+                <label>Client name</label>
+                <input type="text" id="newClientName" placeholder="e.g., Marisela Gary" />
+            </div>
+            <div class="form-group">
+                <label>Project value (R$)</label>
+                <input type="text" id="newClientValue" placeholder="4996.32" />
+            </div>
+            <div class="form-group">
+                <label>Contact (email / phone)</label>
+                <input type="text" id="newClientContact" placeholder="marisela@studio.com" />
+            </div>
+            <div class="form-group">
+                <label>Progress (%)</label>
+                <input type="number" id="newClientProgress" placeholder="45" min="0" max="100" />
+            </div>
+            <div class="form-group">
+                <label>Tier</label>
+                <select id="newClientTier">
+                    <option value="freemium">Freemium</option>
+                    <option value="premium" selected>Premium</option>
+                </select>
+            </div>
+            <button class="btn-submit-client" id="submitClientBtn">✦ ADD TO FIRESTORE</button>
+            <div style="margin-top:16px; font-size:0.6rem; color:rgba(255,255,255,0.15); font-family:'Space Mono',monospace; text-align:center; letter-spacing:0.06em;">
+                Real-time sync · Firestore native
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── SIDEBAR TRIGGER ─── -->
+    <button class="sidebar-trigger" id="sidebarTrigger" aria-label="Open command panel">
+        <i style="font-style:normal; font-size:1.2rem;">⚡</i>
+    </button>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+    FIREBASE SDK + APPLICATION LOGIC (ESM MODULE)
+    ═══════════════════════════════════════════════════════════════ -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js",
+                "firebase/analytics": "https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // FIREBASE IMPORTS — Heksel Imperium Production
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        import { initializeApp } from 'firebase/app';
+        import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
+        import { getAnalytics } from 'firebase/analytics';
+
+        const firebaseConfig = {
+            apiKey: 'AIzaSyBLpnWUoNiKSiZWuWEVOwdAjeiNjvIv1T4',
+            authDomain: 'heksel-imperio.firebaseapp.com',
+            projectId: 'heksel-imperio',
+            storageBucket: 'heksel-imperio.firebasestorage.app',
+            messagingSenderId: '598467080448',
+            appId: '1:598467080448:web:6afe26361bf75c1c21c3e5',
+            measurementId: 'G-Z8K5WVT2WH'
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        // Collections
+        const projectsCol = collection(db, 'projects');
+        const ticketsCol = collection(db, 'tickets');
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // DOM REFS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const grid = document.getElementById('projectsGrid');
+        const projectCountEl = document.getElementById('projectCount');
+        const clockDisplay = document.getElementById('clockDisplay');
+        const msDisplay = document.getElementById('msDisplay');
+        const latencyValue = document.getElementById('latencyValue');
+        const tierButtons = document.querySelectorAll('#tierToggle button');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebarTrigger = document.getElementById('sidebarTrigger');
+        const submitClientBtn = document.getElementById('submitClientBtn');
+        const secretOverlay = document.getElementById('secretOverlay');
+        const secretToast = document.getElementById('secretToast');
+
+        const ticketsOverlay = document.getElementById('ticketsOverlay');
+        const closeTicketsBtn = document.getElementById('closeTicketsBtn');
+        const openTicketsBtn = document.getElementById('openTicketsBtn');
+        const ticketsContainer = document.getElementById('ticketsContainer');
+        const submitTicketBtn = document.getElementById('submitTicketBtn');
+        const ticketClient = document.getElementById('ticketClient');
+        const ticketUrl = document.getElementById('ticketUrl');
+        const ticketDesc = document.getElementById('ticketDesc');
+        const ticketUrgency = document.getElementById('ticketUrgency');
+
+        const genesisInjectBtn = document.getElementById('genesisInjectBtn');
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // STATE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        let currentTier = 'freemium';
+        let projects = [];
+        let tickets = [];
+        let unsubscribeProjects = null;
+        let unsubscribeTickets = null;
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // TOAST SYSTEM
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function showToast(msg, variant = 'cyan') {
+            const existing = document.querySelector('.toast-action');
+            if (existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-action';
+            toast.style.cssText = `
+            position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%) translateY(20px);
+            z-index: 99999; background: rgba(10,10,22,0.94); backdrop-filter: blur(16px);
+            border: 1px solid ${variant === 'gold' ? 'rgba(201,168,76,0.30)' : 'rgba(0,240,255,0.25)'};
+            padding: 12px 28px; border-radius: 60px; font-family: 'Syne', sans-serif;
+            font-weight: 600; font-size: 0.75rem; letter-spacing: 0.06em; color: #fff;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5); opacity: 0; transition: all 0.5s cubic-bezier(0.2,0.9,0.4,1.1);
+            pointer-events: none; max-width: 90vw; text-align: center;
+          `;
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            });
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 600);
+            }, 3400);
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // RENDER: PROJECTS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function renderProjects() {
+            const filtered = projects.filter(p => {
+                if (currentTier === 'freemium') return p.tier === 'freemium';
+                return p.tier === 'premium';
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+              <div class="glass-panel" style="grid-column:1/-1; padding:48px 20px; text-align:center; background:rgba(255,255,255,0.02);">
+                <p style="font-family:'Syne',sans-serif; font-weight:600; opacity:0.3; letter-spacing:0.1em;">
+                  No ${currentTier} projects yet.
+                </p>
+                <p style="font-size:0.7rem; opacity:0.2; margin-top:8px;">Add one via the command panel ⚡</p>
+              </div>
+            `;
+                projectCountEl.textContent = '0';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(p => {
+                const progress = Math.min(Math.max(p.progress || 0, 0), 100);
+                const statusClass = p.status || 'active';
+                const tierLabel = p.tier === 'premium' ? 'PREMIUM' : 'FREMIUM';
+                const formattedValue = 'R$ ' + (p.value || 0).toFixed(2).replace('.', ',');
+
+                let statusDisplay = statusClass.toUpperCase();
+                if (statusClass === 'preview') statusDisplay = 'LIVE PREVIEW';
+                else if (statusClass === 'delivered') statusDisplay = 'COMPLETED';
+                else statusDisplay = 'ACTIVE';
+
+                // Agents
+                const agents = p.agents || [
+                    { name: 'UI Designer IA', status: 'idle' },
+                    { name: 'DeepSeek Coder IA', status: 'idle' },
+                    { name: 'Bug Tester IA', status: 'idle' }
+                ];
+                const activeAgents = agents.filter(a => a.status === 'working').length;
+
+                let agentsHtml = `<div class="agents-area"><div class="agents-title"><span>AI AGENTS</span><span>${activeAgents} active</span></div>`;
+                agents.forEach(a => {
+                    const statusDot = a.status === 'idle' ? 'idle' : a.status === 'working' ? 'working' : a.status ===
+                        'done' ? 'done' : 'error';
+                    agentsHtml += `
+                  <div class="agent-item">
+                    <span class="agent-status ${statusDot}"></span>
+                    ${a.name}
+                    <span style="margin-left:auto; font-size:0.5rem; opacity:0.4; text-transform:uppercase;">${a.status}</span>
+                  </div>
+                `;
+                });
+                agentsHtml += '</div>';
+
+                html += `
+              <div class="project-card" data-id="${p.id}">
+                <div class="card-header">
+                  <div class="client-name">
+                    ${p.name}
+                    <span class="badge-tier">${tierLabel}</span>
+                  </div>
+                  <div class="card-value">${formattedValue}</div>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-label">
+                    <span>DEVELOPMENT</span>
+                    <span>${progress}%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width:${progress}%;"></div>
+                  </div>
+                </div>
+                <div class="card-contact">
+                  <i>✉</i> ${p.contact || '—'}
+                  <span class="status-tag ${statusClass}" style="margin-left:12px;">${statusDisplay}</span>
+                </div>
+                ${agentsHtml}
+                <div class="card-actions">
+                  <button class="btn btn-freemium" data-action="preview" data-id="${p.id}">LIBERAR PRÉVIA</button>
+                  <button class="btn btn-premium" data-action="deliver" data-id="${p.id}">APROVAR ENTREGA</button>
+                </div>
+              </div>
+            `;
+            });
+
+            grid.innerHTML = html;
+            projectCountEl.textContent = filtered.length;
+
+            // ── bind card actions ──
+            grid.querySelectorAll('[data-action]').forEach(btn => {
+                btn.addEventListener('click', async function(e) {
+                    e.stopPropagation();
+                    const action = this.dataset.action;
+                    const id = this.dataset.id;
+                    const project = projects.find(p => p.id === id);
+                    if (!project) return;
+
+                    const docRef = doc(db, 'projects', id);
+
+                    if (action === 'preview') {
+                        if (project.status === 'delivered') {
+                            showToast('⚠️ Project already delivered.', 'gold');
+                            return;
+                        }
+                        if (project.status === 'preview') {
+                            showToast(`🔓 Preview already active for ${project.name}`, 'cyan');
+                            return;
+                        }
+                        // Update Firestore — will trigger onSnapshot and re-render
+                        try {
+                            await updateDoc(docRef, {
+                                status: 'preview',
+                                progress: Math.min((project.progress || 0) + 15, 90),
+                                // trigger agent simulation via status change
+                                _agentAction: 'preview',
+                                _agentTimestamp: serverTimestamp()
+                            });
+                            showToast(`🔓 Live Preview released for ${project.name}`, 'cyan');
+                        } catch (err) {
+                            console.error('Preview error:', err);
+                            showToast('⚠️ Failed to update preview status.', 'gold');
+                        }
+
+                    } else if (action === 'deliver') {
+                        if (project.status === 'delivered') {
+                            showToast(`✅ ${project.name} is already completed.`, 'gold');
+                            return;
+                        }
+                        try {
+                            await updateDoc(docRef, {
+                                status: 'delivered',
+                                progress: 100,
+                                _agentAction: 'deliver',
+                                _agentTimestamp: serverTimestamp()
+                            });
+                            showToast(`✅ Delivery approved for ${project.name} — agents finalizing.`, 'gold');
+                        } catch (err) {
+                            console.error('Delivery error:', err);
+                            showToast('⚠️ Failed to update delivery status.', 'gold');
+                        }
+                    }
+                });
+            });
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // RENDER: TICKETS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function renderTickets() {
+            if (!ticketsContainer) return;
+            if (tickets.length === 0) {
+                ticketsContainer.innerHTML = `
+              <div style="padding:20px; text-align:center; color:rgba(255,255,255,0.20); font-family:'Syne',sans-serif; font-size:0.8rem;">
+                No tickets reported yet.
+              </div>
+            `;
+                return;
+            }
+            let html = '';
+            const sorted = [...tickets].reverse();
+            sorted.forEach(t => {
+                const urgencyClass = t.urgency || 'low';
+                const time = t.createdAt ? new Date(t.createdAt.seconds * 1000).toLocaleString() : new Date(t
+                    .timestamp || Date.now()).toLocaleString();
+                html += `
+              <div class="ticket-item">
+                <div class="ticket-header">
+                  <span class="ticket-client">${t.client || 'Unknown'}</span>
+                  <span class="ticket-urgency ${urgencyClass}">${urgencyClass.toUpperCase()}</span>
+                </div>
+                <div class="ticket-desc">${t.description || 'No description'}</div>
+                <div class="ticket-url">${t.url || 'No URL'}</div>
+                <div class="ticket-time">${time}</div>
+              </div>
+            `;
+            });
+            ticketsContainer.innerHTML = html;
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // FIRESTORE REAL-TIME LISTENERS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function subscribeProjects() {
+            if (unsubscribeProjects) unsubscribeProjects();
+            const q = query(projectsCol, orderBy('createdAt', 'desc'));
+            unsubscribeProjects = onSnapshot(q, (snapshot) => {
+                projects = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    // Auto-agent simulation: if _agentAction is set, simulate agent work
+                    if (data._agentAction) {
+                        // We'll simulate agents in the background
+                        const action = data._agentAction;
+                        const projectId = doc.id;
+                        // Reset agent status after a delay (simulate work)
+                        setTimeout(async () => {
+                            try {
+                                const ref = doc(db, 'projects', projectId);
+                                const current = projects.find(p => p.id === projectId);
+                                if (!current) return;
+                                const agents = current.agents || [
+                                    { name: 'UI Designer IA', status: 'idle' },
+                                    { name: 'DeepSeek Coder IA', status: 'idle' },
+                                    { name: 'Bug Tester IA', status: 'idle' }
+                                ];
+                                let workingAgents = [];
+                                if (action === 'preview') {
+                                    workingAgents = ['UI Designer IA', 'DeepSeek Coder IA'];
+                                } else if (action === 'deliver') {
+                                    workingAgents = ['Bug Tester IA', 'DeepSeek Coder IA'];
+                                }
+                                // Set working
+                                const updatedAgents = agents.map(a => {
+                                    if (workingAgents.includes(a.name)) {
+                                        return { ...a, status: 'working' };
+                                    }
+                                    return a;
+                                });
+                                await updateDoc(ref, {
+                                    agents: updatedAgents,
+                                    _agentAction: null,
+                                    _agentTimestamp: null
+                                });
+                                // After 3s, mark as done
+                                setTimeout(async () => {
+                                    try {
+                                        const finalAgents = updatedAgents.map(a => {
+                                            if (workingAgents.includes(a.name)) {
+                                                return { ...a, status: 'done' };
+                                            }
+                                            return a;
+                                        });
+                                        await updateDoc(ref, { agents: finalAgents });
+                                        showToast(`✅ AI Agents completed ${action} for ${current.name}`,
+                                        'gold');
+                                    } catch (e) { console.warn('Agent finalization error:', e); }
+                                }, 3000 + Math.random() * 2000);
+                            } catch (e) { console.warn('Agent simulation error:', e); }
+                        }, 500);
+                    }
+
+                    projects.push({
+                        id: doc.id,
+                        ...data,
+                        agents: data.agents || [
+                            { name: 'UI Designer IA', status: 'idle' },
+                            { name: 'DeepSeek Coder IA', status: 'idle' },
+                            { name: 'Bug Tester IA', status: 'idle' }
+                        ]
+                    });
+                });
+                renderProjects();
+            }, (error) => {
+                console.error('Projects listener error:', error);
+                showToast('⚠️ Firestore connection error. Check console.', 'gold');
+            });
+        }
+
+        function subscribeTickets() {
+            if (unsubscribeTickets) unsubscribeTickets();
+            const q = query(ticketsCol, orderBy('createdAt', 'desc'));
+            unsubscribeTickets = onSnapshot(q, (snapshot) => {
+                tickets = [];
+                snapshot.forEach(doc => {
+                    tickets.push({ id: doc.id, ...doc.data() });
+                });
+                renderTickets();
+            }, (error) => {
+                console.error('Tickets listener error:', error);
+            });
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SIDEBAR: ADD CLIENT → FIRESTORE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        submitClientBtn.addEventListener('click', async function() {
+            const name = document.getElementById('newClientName').value.trim();
+            const valueRaw = document.getElementById('newClientValue').value.trim();
+            const contact = document.getElementById('newClientContact').value.trim();
+            const progressRaw = document.getElementById('newClientProgress').value.trim();
+            const tier = document.getElementById('newClientTier').value;
+
+            if (!name) { showToast('⚠️ Client name is required', 'gold'); return; }
+            const value = parseFloat(valueRaw.replace(',', '.')) || 4996.32;
+            const progress = Math.min(Math.max(parseInt(progressRaw) || 0, 0), 100);
+
+            try {
+                await addDoc(projectsCol, {
+                    name: name,
+                    value: value,
+                    contact: contact || 'pending@contact',
+                    progress: progress,
+                    tier: tier,
+                    status: 'active',
+                    agents: [
+                        { name: 'UI Designer IA', status: 'idle' },
+                        { name: 'DeepSeek Coder IA', status: 'idle' },
+                        { name: 'Bug Tester IA', status: 'idle' }
+                    ],
+                    createdAt: serverTimestamp()
+                });
+                showToast(`✦ ${name} added to ${tier.toUpperCase()} grid — Firestore synced`, 'cyan');
+                closeSidebar();
+
+                document.getElementById('newClientName').value = '';
+                document.getElementById('newClientValue').value = '';
+                document.getElementById('newClientContact').value = '';
+                document.getElementById('newClientProgress').value = '';
+            } catch (err) {
+                console.error('Add client error:', err);
+                showToast('⚠️ Failed to add client to Firestore.', 'gold');
+            }
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // TICKETS: SUBMIT → FIRESTORE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        submitTicketBtn.addEventListener('click', async function() {
+            const client = ticketClient.value.trim();
+            const url = ticketUrl.value.trim();
+            const description = ticketDesc.value.trim();
+            const urgency = ticketUrgency.value;
+
+            if (!client || !description) {
+                showToast('⚠️ Client name and description are required.', 'gold');
+                return;
+            }
+
+            try {
+                await addDoc(ticketsCol, {
+                    client: client,
+                    url: url || 'Not provided',
+                    description: description,
+                    urgency: urgency,
+                    createdAt: serverTimestamp(),
+                    timestamp: Date.now()
+                });
+                showToast(`🐞 Ticket submitted for ${client}`, 'cyan');
+                ticketClient.value = '';
+                ticketUrl.value = '';
+                ticketDesc.value = '';
+                ticketUrgency.value = 'medium';
+            } catch (err) {
+                console.error('Ticket error:', err);
+                showToast('⚠️ Failed to submit ticket.', 'gold');
+            }
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // GENESIS INJECT — Simulate inbound from Heksel Genesis
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        genesisInjectBtn.addEventListener('click', async function() {
+            const names = ['Lucas Mendes', 'Carla Souza', 'Rafael Lima', 'Amanda Costa', 'Bruno Oliveira'];
+            const name = names[Math.floor(Math.random() * names.length)];
+            const value = Math.round((2000 + Math.random() * 8000) * 100) / 100;
+            const contact = name.toLowerCase().replace(' ', '.') + '@genesis.com';
+            const progress = Math.floor(Math.random() * 40) + 10;
+            const tier = Math.random() > 0.5 ? 'premium' : 'freemium';
+
+            try {
+                await addDoc(projectsCol, {
+                    name: name,
+                    value: value,
+                    contact: contact,
+                    progress: progress,
+                    tier: tier,
+                    status: 'active',
+                    agents: [
+                        { name: 'UI Designer IA', status: 'idle' },
+                        { name: 'DeepSeek Coder IA', status: 'idle' },
+                        { name: 'Bug Tester IA', status: 'idle' }
+                    ],
+                    createdAt: serverTimestamp(),
+                    _source: 'genesis'
+                });
+                showToast(`⚡ Genesis client "${name}" injected into Studio`, 'gold');
+            } catch (err) {
+                console.error('Genesis inject error:', err);
+                showToast('⚠️ Failed to inject from Genesis.', 'gold');
+            }
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // UI CONTROLS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function openSidebar() { sidebarOverlay.classList.add('open'); }
+
+        function closeSidebar() { sidebarOverlay.classList.remove('open'); }
+        sidebarTrigger.addEventListener('click', openSidebar);
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', function(e) {
+            if (e.target === this) closeSidebar();
+        });
+
+        function openTickets() { ticketsOverlay.classList.add('open'); }
+
+        function closeTickets() { ticketsOverlay.classList.remove('open'); }
+        openTicketsBtn.addEventListener('click', openTickets);
+        closeTicketsBtn.addEventListener('click', closeTickets);
+        ticketsOverlay.addEventListener('click', function(e) {
+            if (e.target === this) closeTickets();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') { closeSidebar();
+                closeTickets(); }
+        });
+
+        // ─── TIER TOGGLE ───
+        tierButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                tierButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentTier = this.dataset.tier;
+                renderProjects();
+            });
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // CLOCK + LATENCY
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const ms = String(now.getMilliseconds()).padStart(3, '0');
+            clockDisplay.textContent = `${h}:${m}:${s}`;
+            msDisplay.textContent = `.${ms}`;
+            const lat = 12 + Math.floor(Math.random() * 16);
+            latencyValue.textContent = lat + 'ms';
+        }
+        setInterval(updateClock, 50);
+        updateClock();
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // CURSOR
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const dot = document.querySelector('.cursor-dot');
+        const ring = document.querySelector('.cursor-ring');
+        if (dot && ring) {
+            let mx = 0,
+                my = 0,
+                rx = 0,
+                ry = 0;
+            document.addEventListener('mousemove', (e) => { mx = e.clientX;
+                my = e.clientY; });
+
+            function tick() {
+                rx += (mx - rx) * 0.18;
+                ry += (my - ry) * 0.18;
+                dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
+                ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+                requestAnimationFrame(tick);
+            }
+            tick();
+
+            document.querySelectorAll('button, .project-card, .brand-text, .tier-toggle button, .sidebar-trigger, .brand-logo')
+                .forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        ring.style.width = '56px';
+                        ring.style.height = '56px';
+                        ring.style.borderColor = 'var(--cyan)';
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        ring.style.width = '38px';
+                        ring.style.height = '38px';
+                        ring.style.borderColor = 'rgba(0,240,255,0.40)';
+                    });
+                });
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SECRET MODE (logo triple-click)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const logoImg = document.querySelector('.brand-logo img');
+        if (logoImg) {
+            let clickCount = 0;
+            let clickTimer = null;
+            logoImg.addEventListener('click', function(e) {
+                e.stopPropagation();
+                clickCount++;
+                clearTimeout(clickTimer);
+                clickTimer = setTimeout(() => { clickCount = 0; }, 1200);
+                if (clickCount >= 3) {
+                    clickCount = 0;
+                    if (secretOverlay.classList.contains('active')) {
+                        secretOverlay.classList.remove('active');
+                        secretToast.textContent = '✦ SECRET MODE DEACTIVATED ✦';
+                        secretToast.classList.add('show');
+                        setTimeout(() => secretToast.classList.remove('show'), 2500);
+                    } else {
+                        const colors = [
+                            ['#00f0ff', '#b45eff'],
+                            ['#ff2d78', '#ffd600'],
+                            ['#00ffc3', '#7b2fff'],
+                            ['#ff6600', '#00f0ff'],
+                            ['#ff00cc', '#00ff99']
+                        ];
+                        const pick = colors[Math.floor(Math.random() * colors.length)];
+                        secretOverlay.style.background =
+                            `radial-gradient(ellipse at center, ${pick[0]}22, ${pick[1]}11, transparent 70%)`;
+                        secretOverlay.classList.add('active');
+                        secretToast.textContent = `✦ SECRET MODE — ${pick[0]} × ${pick[1]} ✦`;
+                        secretToast.classList.add('show');
+                        setTimeout(() => secretToast.classList.remove('show'), 3000);
+                    }
+                }
+            });
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // INIT
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        subscribeProjects();
+        subscribeTickets();
+
+        console.log('🔥 HEKSEL STUDIO v4.0 — Firestore real-time engine engaged');
+        console.log('📡 Listening to projects & tickets collections...');
+        console.log('🤖 AI Workers Automation: ACTIVE');
+        console.log('💎 Heksel Imperium — Production ready');
+    </script>
+</body>
+</html>
