@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1424,25 +1423,24 @@
     </button>
 
     <!-- ═══════════════════════════════════════════════════════════════
-    FIREBASE SDK + APPLICATION LOGIC (ESM MODULE)
+    SINGLE MODULE SCRIPT — FIREBASE + APPLICATION LOGIC
     ═══════════════════════════════════════════════════════════════ -->
-    <script type="importmap">
-        {
-            "imports": {
-                "firebase/app": "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js",
-                "firebase/firestore": "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js",
-                "firebase/analytics": "https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js"
-            }
-        }
-    </script>
-
     <script type="module">
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // FIREBASE IMPORTS — Heksel Imperium Production
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        import { initializeApp } from 'firebase/app';
-        import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
-        import { getAnalytics } from 'firebase/analytics';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            onSnapshot,
+            updateDoc,
+            doc,
+            query,
+            orderBy,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: 'AIzaSyBLpnWUoNiKSiZWuWEVOwdAjeiNjvIv1T4',
@@ -1455,10 +1453,7 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const db = getFirestore(app);
-
-        // Collections
         const projectsCol = collection(db, 'projects');
         const ticketsCol = collection(db, 'tickets');
 
@@ -1639,12 +1634,10 @@
                             showToast(`🔓 Preview already active for ${project.name}`, 'cyan');
                             return;
                         }
-                        // Update Firestore — will trigger onSnapshot and re-render
                         try {
                             await updateDoc(docRef, {
                                 status: 'preview',
                                 progress: Math.min((project.progress || 0) + 15, 90),
-                                // trigger agent simulation via status change
                                 _agentAction: 'preview',
                                 _agentTimestamp: serverTimestamp()
                             });
@@ -1722,7 +1715,6 @@
                     const data = doc.data();
                     // Auto-agent simulation: if _agentAction is set, simulate agent work
                     if (data._agentAction) {
-                        // We'll simulate agents in the background
                         const action = data._agentAction;
                         const projectId = doc.id;
                         // Reset agent status after a delay (simulate work)
@@ -1742,7 +1734,6 @@
                                 } else if (action === 'deliver') {
                                     workingAgents = ['Bug Tester IA', 'DeepSeek Coder IA'];
                                 }
-                                // Set working
                                 const updatedAgents = agents.map(a => {
                                     if (workingAgents.includes(a.name)) {
                                         return { ...a, status: 'working' };
@@ -1754,7 +1745,6 @@
                                     _agentAction: null,
                                     _agentTimestamp: null
                                 });
-                                // After 3s, mark as done
                                 setTimeout(async () => {
                                     try {
                                         const finalAgents = updatedAgents.map(a => {
@@ -1765,7 +1755,7 @@
                                         });
                                         await updateDoc(ref, { agents: finalAgents });
                                         showToast(`✅ AI Agents completed ${action} for ${current.name}`,
-                                        'gold');
+                                            'gold');
                                     } catch (e) { console.warn('Agent finalization error:', e); }
                                 }, 3000 + Math.random() * 2000);
                             } catch (e) { console.warn('Agent simulation error:', e); }
@@ -2053,5 +2043,6 @@
         console.log('🤖 AI Workers Automation: ACTIVE');
         console.log('💎 Heksel Imperium — Production ready');
     </script>
+
 </body>
 </html>
