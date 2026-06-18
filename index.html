@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <style>
         /* ═══════════════════════════════════════════════════════════════
-           RESET + VARIABLES — TROSK MATTE PALETTE
+           RESET + VARIABLES — CLAUDE-MATTE COM AZUL CIANO FOSCO
         ═══════════════════════════════════════════════════════════════ */
         *,
         *::before,
@@ -24,8 +24,8 @@
             --glass: rgba(14, 14, 18, 0.85);
             --border-fine: rgba(255, 255, 255, 0.04);
             --border-medium: rgba(255, 255, 255, 0.06);
-            --accent-blue: #4a9eff;
-            --accent-blue-glow: rgba(74, 158, 255, 0.25);
+            --accent-cyan: #4a9eff;
+            --accent-cyan-glow: rgba(74, 158, 255, 0.25);
             --text-cream: #f4f0ea;
             --text-muted: #8a857f;
             --text-dark: #2a2a2a;
@@ -50,17 +50,20 @@
             line-height: 1.6;
         }
 
-        /* ── scrollbar ── */
+        /* ── scrollbar totalmente preta ── */
         ::-webkit-scrollbar {
             width: 4px;
+            background: #000;
         }
         ::-webkit-scrollbar-track {
             background: #000;
         }
         ::-webkit-scrollbar-thumb {
-            background: var(--accent-blue);
+            background: #000;
             border-radius: 4px;
-            box-shadow: 0 0 8px var(--accent-blue-glow);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #111;
         }
 
         /* ── custom cursor ── */
@@ -74,9 +77,9 @@
         .cursor-dot {
             width: 6px;
             height: 6px;
-            background: var(--accent-blue);
+            background: var(--accent-cyan);
             border-radius: 50%;
-            box-shadow: 0 0 14px var(--accent-blue-glow);
+            box-shadow: 0 0 14px var(--accent-cyan-glow);
             transform: translate(-50%, -50%);
         }
         .cursor-ring {
@@ -122,12 +125,8 @@
             pointer-events: none;
         }
         @keyframes gridDrift {
-            0% {
-                transform: translate(0, 0);
-            }
-            100% {
-                transform: translate(4%, 4%);
-            }
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(4%, 4%); }
         }
 
         /* ── utility ── */
@@ -146,7 +145,7 @@
             margin-bottom: 12px;
         }
         .section-title .highlight {
-            color: var(--accent-blue);
+            color: var(--accent-cyan);
         }
         .section-subtitle {
             font-size: 1rem;
@@ -258,8 +257,8 @@
             100% { transform: translateX(200%) rotate(20deg); }
         }
         .btn-outline:hover {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 24px var(--accent-blue-glow);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 24px var(--accent-cyan-glow);
         }
 
         .btn-primary {
@@ -384,7 +383,7 @@
             gap: 6px;
         }
         .header-clock .ms {
-            color: var(--accent-blue);
+            color: var(--accent-cyan);
             font-size: 0.55rem;
             opacity: 0.7;
             min-width: 28px;
@@ -435,7 +434,7 @@
             letter-spacing: -0.02em;
             margin-bottom: 16px;
         }
-        .hero-section h1 .highlight { color: var(--accent-blue); }
+        .hero-section h1 .highlight { color: var(--accent-cyan); }
         .hero-section .hero-desc {
             font-size: 1.1rem;
             color: var(--text-muted);
@@ -451,7 +450,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════
-           BUG TRACKER — com animação sequencial (ajuste de espaçamento)
+           BUG TRACKER
         ═══════════════════════════════════════════════════════════════ */
         .tracker-section {
             padding: 48px 0;
@@ -489,7 +488,7 @@
             font-family: 'Space Mono', monospace;
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--accent-blue);
+            color: var(--accent-cyan);
             display: block;
         }
         .tracker-info .stat-item .label {
@@ -507,7 +506,6 @@
             box-shadow: var(--shadow-card);
         }
 
-        /* ── Campos com animação sequencial (espaçamento ajustado) ── */
         .field-group {
             position: relative;
             overflow: hidden;
@@ -519,7 +517,7 @@
         .field-group.visible {
             max-height: 100px;
             opacity: 1;
-            margin-bottom: 12px; /* espaço reduzido */
+            margin-bottom: 12px;
         }
         .field-group label {
             display: block;
@@ -530,12 +528,11 @@
             color: var(--text-muted);
             text-transform: uppercase;
             margin-bottom: 4px;
-            transition: opacity 0.3s ease;
         }
         .field-group input,
         .field-group textarea {
             width: 100%;
-            padding: 10px 14px; /* padding reduzido para diminuir altura */
+            padding: 10px 14px;
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 14px;
@@ -548,15 +545,13 @@
         }
         .field-group input:focus,
         .field-group textarea:focus {
-            border-color: var(--accent-blue);
+            border-color: var(--accent-cyan);
             box-shadow: 0 0 0 3px rgba(74,158,255,0.06);
         }
-        /* Ajuste específico para o textarea */
         .field-group textarea {
             min-height: 70px;
         }
 
-        /* ── Pré-visualização ── */
         .preview-area {
             background: rgba(255,255,255,0.02);
             border-radius: 14px;
@@ -590,9 +585,7 @@
             font-size: 0.85rem;
             border-bottom: 1px solid rgba(255,255,255,0.02);
         }
-        .preview-area .preview-item:last-child {
-            border-bottom: none;
-        }
+        .preview-area .preview-item:last-child { border-bottom: none; }
         .preview-area .preview-item .label {
             color: var(--text-muted);
             font-weight: 500;
@@ -643,9 +636,9 @@
             overflow-y: auto;
             padding-right: 4px;
         }
-        .ticket-list::-webkit-scrollbar { width: 3px; }
+        .ticket-list::-webkit-scrollbar { width: 3px; background: #000; }
         .ticket-list::-webkit-scrollbar-thumb {
-            background: var(--accent-blue);
+            background: #000;
             border-radius: 99px;
         }
 
@@ -654,7 +647,7 @@
             border-radius: 14px;
             padding: 12px 16px;
             margin-bottom: 8px;
-            border-left: 3px solid var(--accent-blue);
+            border-left: 3px solid var(--accent-cyan);
             transition: 0.3s;
         }
         .ticket-item:hover {
@@ -697,6 +690,120 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════
+           GLOBAL PRODUCTION PIPELINE
+        ═══════════════════════════════════════════════════════════════ */
+        .pipeline-section {
+            padding: 48px 0;
+        }
+        .pipeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .pipeline-header .badge-live {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.08em;
+            color: #00cc88;
+            background: rgba(0, 204, 136, 0.10);
+            padding: 4px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 204, 136, 0.15);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pipeline-header .badge-live .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00cc88;
+            box-shadow: 0 0 12px #00cc88;
+            animation: pulseDot 1.8s ease-in-out infinite;
+        }
+
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .pipeline-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 20px 24px;
+            border: 1px solid var(--border-medium);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .pipeline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            opacity: 0.3;
+        }
+        .pipeline-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(74,158,255,0.04);
+        }
+        .pipeline-card .card-brand {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text-cream);
+            margin-bottom: 4px;
+        }
+        .pipeline-card .card-scope {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .pipeline-card .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .pipeline-card .card-footer .tag-pending {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: var(--accent-cyan);
+            background: rgba(74, 158, 255, 0.10);
+            padding: 3px 14px;
+            border-radius: 40px;
+            border: 1px solid rgba(74, 158, 255, 0.15);
+            text-transform: uppercase;
+        }
+        .pipeline-card .card-footer .card-time {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+        .pipeline-empty {
+            grid-column: 1 / -1;
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            border: 1px dashed var(--border-medium);
+            border-radius: 20px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
            MANIFESTO
         ═══════════════════════════════════════════════════════════════ */
         .manifesto-section {
@@ -722,7 +829,7 @@
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .manifesto-item:hover {
-            border-color: var(--accent-blue);
+            border-color: var(--accent-cyan);
             box-shadow: 0 0 30px rgba(74,158,255,0.03);
         }
         .manifesto-item h3 {
@@ -730,7 +837,7 @@
             font-weight: 700;
             font-size: 0.8rem;
             letter-spacing: 0.06em;
-            color: var(--accent-blue);
+            color: var(--accent-cyan);
             margin-bottom: 12px;
             text-transform: uppercase;
         }
@@ -813,7 +920,7 @@
             border-radius: 50%;
             background: var(--glass);
             backdrop-filter: blur(16px);
-            border: 1.5px solid rgba(74,158,255,0.20);
+            border: 1.5px solid rgba(74, 158, 255, 0.20);
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
@@ -825,8 +932,8 @@
         }
         .trosk-fab:hover {
             transform: scale(1.08);
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 40px var(--accent-blue-glow);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 40px var(--accent-cyan-glow);
         }
         .trosk-fab img {
             width: 100%;
@@ -856,6 +963,7 @@
             .section-title { font-size: 1.4rem; }
             .trosk-fab { width: 56px; height: 56px; bottom: 20px; right: 20px; padding: 10px; }
             .bug-form { padding: 20px; }
+            .pipeline-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 400px) {
             .trosk-fab { width: 48px; height: 48px; bottom: 16px; right: 16px; padding: 8px; }
@@ -889,6 +997,7 @@
 
             <nav class="header-nav">
                 <a href="#tracker">Bug Tracker</a>
+                <a href="#pipeline">Pipeline</a>
                 <a href="#manifesto">Manifesto</a>
                 <a href="#footer">Contact</a>
                 <a href="#" class="nav-cta">Trosk AI</a>
@@ -923,14 +1032,14 @@
         </p>
         <div class="hero-actions">
             <a href="#tracker" class="btn-primary">Report a Bug</a>
-            <a href="#manifesto" class="btn-outline">
-                <span class="trosk-matte-glow">Explore Our Philosophy</span>
+            <a href="#pipeline" class="btn-outline">
+                <span class="trosk-matte-glow">View Pipeline</span>
             </a>
         </div>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════
-    BUG TRACKER — com animação sequencial (espaçamento ajustado)
+    BUG TRACKER
     ═══════════════════════════════════════════════════════════════ -->
     <section class="tracker-section container" id="tracker">
         <div class="tracker-grid">
@@ -960,25 +1069,19 @@
             </div>
 
             <div class="bug-form">
-                <!-- Campo 1: Your Name -->
                 <div class="field-group visible" id="fieldName">
                     <label>Your Name</label>
                     <input type="text" id="bugName" placeholder="e.g., Mike" />
                 </div>
-
-                <!-- Campo 2: Site / App URL (inicialmente oculto) -->
                 <div class="field-group" id="fieldUrl">
                     <label>Site / App URL</label>
                     <input type="text" id="bugUrl" placeholder="https://mike-site.com" />
                 </div>
-
-                <!-- Campo 3: Bug Description (inicialmente oculto) -->
                 <div class="field-group" id="fieldDesc">
                     <label>Bug Description</label>
                     <textarea id="bugDesc" rows="2" placeholder="Describe the issue in detail..."></textarea>
                 </div>
 
-                <!-- Área de pré-visualização -->
                 <div class="preview-area" id="previewArea">
                     <div class="preview-title">✦ Confirm your ticket</div>
                     <div class="preview-item">
@@ -995,7 +1098,6 @@
                     </div>
                 </div>
 
-                <!-- Botão de envio (inicialmente oculto) -->
                 <div class="btn-submit-wrap" id="submitWrap">
                     <button class="btn-submit" id="submitBugBtn">✦ Report Bug</button>
                 </div>
@@ -1004,6 +1106,30 @@
                     <div class="empty-tickets">No tickets reported yet. Your bugs will appear here.</div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+    GLOBAL PRODUCTION PIPELINE
+    ═══════════════════════════════════════════════════════════════ -->
+    <section class="pipeline-section container" id="pipeline">
+        <div class="pipeline-header">
+            <h2 class="section-title" style="margin-bottom:0;">
+                <span class="text-glow-white">Global</span>
+                <span class="text-glow-cyan">Production</span>
+                <span class="text-glow-white">Pipeline</span>
+            </h2>
+            <div class="badge-live">
+                <span class="dot"></span> LIVE
+            </div>
+        </div>
+        <p class="section-subtitle" style="margin-bottom:24px;">
+            Real‑time orders from the Genesis ecosystem. Every new contract appears instantly.
+        </p>
+
+        <div class="pipeline-grid" id="pipelineGrid">
+            <!-- Cards renderizados via JavaScript -->
+            <div class="pipeline-empty">Awaiting incoming orders from Genesis...</div>
         </div>
     </section>
 
@@ -1058,8 +1184,8 @@
             <div class="footer-col">
                 <h4>Navigation</h4>
                 <a href="#tracker">Bug Tracker</a>
+                <a href="#pipeline">Pipeline</a>
                 <a href="#manifesto">Manifesto</a>
-                <a href="#">Trosk AI</a>
             </div>
             <div class="footer-col">
                 <h4>Connect</h4>
@@ -1085,7 +1211,7 @@
     ═══════════════════════════════════════════════════════════════ -->
     <script type="module">
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // FIREBASE IMPORTS
+        // FIREBASE IMPORTS — Heksel Imperium Production
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js";
@@ -1099,6 +1225,7 @@
             serverTimestamp
         } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+        // 🔑 Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBLpnWUoNiKSiZWuWEVOwdAjeiNjvIv1T4",
             authDomain: "heksel-imperio.firebaseapp.com",
@@ -1112,7 +1239,10 @@
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
+
+        // ── Coleções ──
         const ticketsCol = collection(db, 'tickets');
+        const ordersCol = collection(db, 'orders');
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // DOM REFS
@@ -1128,7 +1258,6 @@
         const submitBugBtn = document.getElementById('submitBugBtn');
         const ticketList = document.getElementById('ticketList');
 
-        // Elementos da animação sequencial
         const fieldName = document.getElementById('fieldName');
         const fieldUrl = document.getElementById('fieldUrl');
         const fieldDesc = document.getElementById('fieldDesc');
@@ -1138,8 +1267,10 @@
         const previewUrl = document.getElementById('previewUrl');
         const previewDesc = document.getElementById('previewDesc');
 
+        const pipelineGrid = document.getElementById('pipelineGrid');
+
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // FUNÇÃO PARA ATUALIZAR A PRÉ-VISUALIZAÇÃO
+        // BUG TRACKER — Animação sequencial
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function updatePreview() {
             const name = bugName.value.trim();
@@ -1150,9 +1281,6 @@
             previewUrl.textContent = url || '—';
             previewDesc.textContent = desc || '—';
 
-            // Controlar visibilidade dos campos
-            // Campo 1: sempre visível (já tem classe 'visible')
-            // Campo 2: aparece se nome tiver valor
             if (name.length > 0) {
                 fieldUrl.classList.add('visible');
             } else {
@@ -1163,7 +1291,6 @@
                 return;
             }
 
-            // Campo 3: aparece se URL tiver valor
             if (url.length > 0) {
                 fieldDesc.classList.add('visible');
             } else {
@@ -1173,7 +1300,6 @@
                 return;
             }
 
-            // Pré-visualização: aparece se descrição tiver valor
             if (desc.length > 0) {
                 previewArea.classList.add('visible');
                 submitWrap.classList.add('visible');
@@ -1183,9 +1309,6 @@
             }
         }
 
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // EVENTOS PARA ANIMAÇÃO SEQUENCIAL
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         bugName.addEventListener('input', updatePreview);
         bugUrl.addEventListener('input', updatePreview);
         bugDesc.addEventListener('input', updatePreview);
@@ -1250,9 +1373,39 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // FIRESTORE LISTENER
+        // RENDER ORDERS (PIPELINE)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function renderOrders(orders) {
+            if (!pipelineGrid) return;
+            if (orders.length === 0) {
+                pipelineGrid.innerHTML = `<div class="pipeline-empty">Awaiting incoming orders from Genesis...</div>`;
+                return;
+            }
+            let html = '';
+            const sorted = [...orders].reverse();
+            sorted.forEach(order => {
+                const time = order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleString() : new Date(order.timestamp).toLocaleString();
+                const brand = order.brand || 'Unknown Brand';
+                const scope = order.scope || 'No scope defined';
+                html += `
+                    <div class="pipeline-card">
+                        <div class="card-brand">${brand}</div>
+                        <div class="card-scope">${scope}</div>
+                        <div class="card-footer">
+                            <span class="tag-pending">⚡ Pending Production</span>
+                            <span class="card-time">${time}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            pipelineGrid.innerHTML = html;
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // FIRESTORE LISTENERS
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         let unsubscribeTickets = null;
+        let unsubscribeOrders = null;
 
         function subscribeTickets() {
             if (unsubscribeTickets) unsubscribeTickets();
@@ -1269,8 +1422,22 @@
             });
         }
 
+        function subscribeOrders() {
+            if (unsubscribeOrders) unsubscribeOrders();
+            const q = query(ordersCol, orderBy('createdAt', 'desc'));
+            unsubscribeOrders = onSnapshot(q, (snapshot) => {
+                const orders = [];
+                snapshot.forEach(doc => {
+                    orders.push({ id: doc.id, ...doc.data() });
+                });
+                renderOrders(orders);
+            }, (error) => {
+                console.error('Orders listener error:', error);
+            });
+        }
+
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // SUBMIT TICKET (com reset da animação)
+        // SUBMIT TICKET
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         submitBugBtn.addEventListener('click', async function() {
             const name = bugName.value.trim();
@@ -1292,16 +1459,13 @@
                 });
                 showToast('🐞 Ticket reported — Trosk is analyzing.');
 
-                // Resetar campos e animação
                 bugName.value = '';
                 bugUrl.value = '';
                 bugDesc.value = '';
-                // Esconder campos extras e preview
                 fieldUrl.classList.remove('visible');
                 fieldDesc.classList.remove('visible');
                 previewArea.classList.remove('visible');
                 submitWrap.classList.remove('visible');
-                // Atualizar preview (para mostrar placeholders)
                 updatePreview();
             } catch (err) {
                 console.error('Ticket error:', err);
@@ -1349,7 +1513,7 @@
                     el.addEventListener('mouseenter', () => {
                         ring.style.width = '56px';
                         ring.style.height = '56px';
-                        ring.style.borderColor = 'var(--accent-blue)';
+                        ring.style.borderColor = 'var(--accent-cyan)';
                     });
                     el.addEventListener('mouseleave', () => {
                         ring.style.width = '38px';
@@ -1364,10 +1528,10 @@
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         try {
             subscribeTickets();
-            // Inicializar preview (campo 1 visível)
+            subscribeOrders();
             updatePreview();
-            console.log('🔥 HEKSEL STUDIO v5.0 — Architecture of Power engaged');
-            console.log('📡 Listening to tickets collection...');
+            console.log('🔥 HEKSEL STUDIO v5.0 — Production Pipeline engaged');
+            console.log('📡 Listening to tickets & orders collections...');
             console.log('💎 Heksel Imperium — Production ready');
         } catch (err) {
             console.error('Fatal initialization error:', err);
