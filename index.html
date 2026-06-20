@@ -284,6 +284,27 @@
             box-shadow: 0 0 40px rgba(0,198,255,0.25), 0 0 60px rgba(180,94,255,0.15);
         }
 
+        .btn-cyan {
+            display: inline-block;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 12px 28px;
+            border-radius: 60px;
+            border: none;
+            background: var(--accent-cyan);
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-cyan:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px var(--accent-cyan-glow);
+        }
+
         /* ═══════════════════════════════════════════════════════════════
            HEADER
         ═══════════════════════════════════════════════════════════════ */
@@ -637,10 +658,7 @@
             padding-right: 4px;
         }
         .ticket-list::-webkit-scrollbar { width: 3px; background: #000; }
-        .ticket-list::-webkit-scrollbar-thumb {
-            background: #000;
-            border-radius: 99px;
-        }
+        .ticket-list::-webkit-scrollbar-thumb { background: #000; border-radius: 99px; }
 
         .ticket-item {
             background: rgba(255,255,255,0.02);
@@ -690,7 +708,59 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════
-           GLOBAL PRODUCTION PIPELINE
+           CREATE ORDER (WEBHOOK)
+        ═══════════════════════════════════════════════════════════════ */
+        .create-order-section {
+            padding: 32px 0 8px;
+        }
+        .create-order-form {
+            background: var(--bg-card);
+            border-radius: 28px;
+            padding: 28px 32px;
+            border: 1px solid var(--border-medium);
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-end;
+        }
+        .create-order-form .field {
+            flex: 1 1 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .create-order-form .field label {
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .create-order-form .field input {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            color: var(--text-cream);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            outline: none;
+        }
+        .create-order-form .field input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(74,158,255,0.06);
+        }
+        .create-order-form .btn-cyan {
+            flex: 0 0 auto;
+            padding: 10px 32px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           GLOBAL PRODUCTION PIPELINE — CARROSSEL 3×3
         ═══════════════════════════════════════════════════════════════ */
         .pipeline-section {
             padding: 48px 0;
@@ -725,19 +795,45 @@
             animation: pulseDot 1.8s ease-in-out infinite;
         }
 
-        .pipeline-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+        /* Container do carrossel */
+        .pipeline-carousel {
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            gap: 24px;
+            padding-bottom: 12px;
+            scrollbar-width: none; /* Firefox */
         }
+        .pipeline-carousel::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        /* Cada página (slide) */
+        .pipeline-page {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, auto);
+            gap: 16px;
+            min-height: 320px; /* garante altura consistente */
+            align-content: start;
+        }
+
         .pipeline-card {
             background: var(--bg-card);
             border-radius: 20px;
-            padding: 20px 24px;
+            padding: 16px 20px;
             border: 1px solid var(--border-medium);
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 120px;
         }
         .pipeline-card::before {
             content: '';
@@ -756,41 +852,69 @@
         .pipeline-card .card-brand {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--text-cream);
             margin-bottom: 4px;
+            line-height: 1.3;
         }
         .pipeline-card .card-scope {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            margin-bottom: 10px;
-            line-height: 1.5;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            flex: 1;
         }
         .pipeline-card .card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
+            margin-top: auto;
         }
         .pipeline-card .card-footer .tag-pending {
             font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             font-weight: 700;
             letter-spacing: 0.06em;
             color: var(--accent-cyan);
             background: rgba(74, 158, 255, 0.10);
-            padding: 3px 14px;
+            padding: 2px 12px;
             border-radius: 40px;
             border: 1px solid rgba(74, 158, 255, 0.15);
             text-transform: uppercase;
         }
         .pipeline-card .card-footer .card-time {
             font-family: 'Space Mono', monospace;
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             color: var(--text-muted);
             opacity: 0.5;
         }
+
+        /* Indicadores de página (pontinhos) */
+        .pipeline-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .pipeline-dots .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            opacity: 0.3;
+            transition: opacity 0.3s, background 0.3s;
+            cursor: pointer;
+        }
+        .pipeline-dots .dot.active {
+            opacity: 1;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan-glow);
+        }
+
+        /* Estado vazio */
         .pipeline-empty {
             grid-column: 1 / -1;
             padding: 40px 20px;
@@ -801,6 +925,36 @@
             opacity: 0.5;
             border: 1px dashed var(--border-medium);
             border-radius: 20px;
+        }
+
+        /* Responsivo: em telas menores, reduzir para 2 colunas e 2 linhas? Mas o requisito é 3x3, então mantemos, mas em mobile talvez 2 ou 1 coluna? O pedido foi específico: 3 linhas, 3 colunas, com scroll horizontal. Vamos manter 3 colunas até em mobile, mas ajustar o tamanho dos cards. */
+        @media (max-width: 800px) {
+            .pipeline-page {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, auto);
+                gap: 12px;
+            }
+            .pipeline-card {
+                min-height: 100px;
+                padding: 14px 16px;
+            }
+        }
+        @media (max-width: 500px) {
+            .pipeline-page {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: repeat(3, auto);
+                gap: 10px;
+            }
+            .pipeline-card {
+                min-height: 90px;
+                padding: 12px 14px;
+            }
+            .pipeline-card .card-brand {
+                font-size: 0.85rem;
+            }
+            .pipeline-card .card-scope {
+                font-size: 0.7rem;
+            }
         }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -948,7 +1102,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════
-           RESPONSIVE
+           RESPONSIVE GERAL
         ═══════════════════════════════════════════════════════════════ */
         @media (max-width: 700px) {
             .header-inner { flex-direction: column; align-items: stretch; gap: 12px; }
@@ -963,7 +1117,8 @@
             .section-title { font-size: 1.4rem; }
             .trosk-fab { width: 56px; height: 56px; bottom: 20px; right: 20px; padding: 10px; }
             .bug-form { padding: 20px; }
-            .pipeline-grid { grid-template-columns: 1fr; }
+            .create-order-form { flex-direction: column; align-items: stretch; }
+            .create-order-form .btn-cyan { align-self: flex-start; }
         }
         @media (max-width: 400px) {
             .trosk-fab { width: 48px; height: 48px; bottom: 16px; right: 16px; padding: 8px; }
@@ -1110,7 +1265,32 @@
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════
-    GLOBAL PRODUCTION PIPELINE
+    CREATE ORDER (WEBHOOK)
+    ═══════════════════════════════════════════════════════════════ -->
+    <section class="create-order-section container" id="createOrder">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
+            <h2 class="section-title" style="margin-bottom:0; font-size:1.3rem;">
+                <span class="text-glow-white">Create</span>
+                <span class="text-glow-cyan">Production</span>
+                <span class="text-glow-white">Order</span>
+            </h2>
+            <span style="font-size:0.7rem; color:var(--text-muted); opacity:0.5;">→ Webhook</span>
+        </div>
+        <div class="create-order-form">
+            <div class="field">
+                <label>Brand / App Name</label>
+                <input type="text" id="orderBrand" placeholder="e.g., Nike" />
+            </div>
+            <div class="field">
+                <label>Project Scope</label>
+                <input type="text" id="orderScope" placeholder="e.g., Complete redesign" />
+            </div>
+            <button class="btn-cyan" id="sendOrderBtn">✦ Send to Pipeline</button>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+    GLOBAL PRODUCTION PIPELINE — CARROSSEL 3×3
     ═══════════════════════════════════════════════════════════════ -->
     <section class="pipeline-section container" id="pipeline">
         <div class="pipeline-header">
@@ -1127,10 +1307,13 @@
             Real‑time orders from the Genesis ecosystem. Every new contract appears instantly.
         </p>
 
-        <div class="pipeline-grid" id="pipelineGrid">
-            <!-- Cards renderizados via JavaScript -->
-            <div class="pipeline-empty">Awaiting incoming orders from Genesis...</div>
+        <!-- Carrossel -->
+        <div class="pipeline-carousel" id="pipelineCarousel">
+            <!-- Páginas serão injetadas via JavaScript -->
         </div>
+
+        <!-- Indicadores (dots) -->
+        <div class="pipeline-dots" id="pipelineDots"></div>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════
@@ -1245,6 +1428,11 @@
         const ordersCol = collection(db, 'orders');
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // WEBHOOK URL (Make)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const WEBHOOK_URL = 'https://hook.us2.make.com/f4f2ufisvcr3kk1f6rp5z370c7489i6y';
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // DOM REFS
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const clockDisplay = document.getElementById('clockDisplay');
@@ -1267,7 +1455,12 @@
         const previewUrl = document.getElementById('previewUrl');
         const previewDesc = document.getElementById('previewDesc');
 
-        const pipelineGrid = document.getElementById('pipelineGrid');
+        const pipelineCarousel = document.getElementById('pipelineCarousel');
+        const pipelineDots = document.getElementById('pipelineDots');
+
+        const orderBrand = document.getElementById('orderBrand');
+        const orderScope = document.getElementById('orderScope');
+        const sendOrderBtn = document.getElementById('sendOrderBtn');
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // BUG TRACKER — Animação sequencial
@@ -1373,32 +1566,90 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // RENDER ORDERS (PIPELINE)
+        // RENDER ORDERS (PIPELINE) — CARROSSEL 3×3
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function renderOrders(orders) {
-            if (!pipelineGrid) return;
+            if (!pipelineCarousel) return;
+
             if (orders.length === 0) {
-                pipelineGrid.innerHTML = `<div class="pipeline-empty">Awaiting incoming orders from Genesis...</div>`;
-                return;
-            }
-            let html = '';
-            const sorted = [...orders].reverse();
-            sorted.forEach(order => {
-                const time = order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleString() : new Date(order.timestamp).toLocaleString();
-                const brand = order.brand || 'Unknown Brand';
-                const scope = order.scope || 'No scope defined';
-                html += `
-                    <div class="pipeline-card">
-                        <div class="card-brand">${brand}</div>
-                        <div class="card-scope">${scope}</div>
-                        <div class="card-footer">
-                            <span class="tag-pending">⚡ Pending Production</span>
-                            <span class="card-time">${time}</span>
-                        </div>
+                pipelineCarousel.innerHTML = `
+                    <div class="pipeline-page">
+                        <div class="pipeline-empty">Awaiting incoming orders from Genesis...</div>
                     </div>
                 `;
+                pipelineDots.innerHTML = '';
+                return;
+            }
+
+            // Agrupar em páginas de 9 (3x3)
+            const pageSize = 9;
+            const pages = [];
+            for (let i = 0; i < orders.length; i += pageSize) {
+                pages.push(orders.slice(i, i + pageSize));
+            }
+
+            let carouselHtml = '';
+            pages.forEach((page, pageIndex) => {
+                carouselHtml += `<div class="pipeline-page" data-page="${pageIndex}">`;
+                page.forEach(order => {
+                    const time = order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleString() : new Date(order.timestamp).toLocaleString();
+                    const brand = order.brand || order.name || order.client || 'Marca não especificada';
+                    const scope = order.scope || order.project || 'Escopo não definido';
+                    carouselHtml += `
+                        <div class="pipeline-card">
+                            <div class="card-brand">${brand}</div>
+                            <div class="card-scope">${scope}</div>
+                            <div class="card-footer">
+                                <span class="tag-pending">⚡ Pending Production</span>
+                                <span class="card-time">${time}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                // Se a página estiver incompleta, preencher com cards vazios (opcional)
+                const remaining = pageSize - page.length;
+                for (let i = 0; i < remaining; i++) {
+                    carouselHtml += `<div class="pipeline-card" style="opacity:0.1; pointer-events:none; border-color:transparent;"></div>`;
+                }
+                carouselHtml += `</div>`;
             });
-            pipelineGrid.innerHTML = html;
+
+            pipelineCarousel.innerHTML = carouselHtml;
+
+            // Atualizar indicadores (dots)
+            pipelineDots.innerHTML = pages.map((_, idx) =>
+                `<span class="dot ${idx === 0 ? 'active' : ''}" data-index="${idx}"></span>`
+            ).join('');
+
+            // Adicionar evento de clique nos dots para navegar
+            pipelineDots.querySelectorAll('.dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const index = parseInt(dot.dataset.index, 10);
+                    const page = pipelineCarousel.querySelector(`.pipeline-page[data-page="${index}"]`);
+                    if (page) {
+                        page.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+                    }
+                });
+            });
+
+            // Atualizar dot ativo durante o scroll
+            pipelineCarousel.addEventListener('scroll', () => {
+                const pages = pipelineCarousel.querySelectorAll('.pipeline-page');
+                let activeIndex = 0;
+                const carouselRect = pipelineCarousel.getBoundingClientRect();
+                pages.forEach((page, idx) => {
+                    const rect = page.getBoundingClientRect();
+                    // Verifica se a página está visível (pelo menos 50% da largura)
+                    const visibleWidth = Math.min(rect.right, carouselRect.right) - Math.max(rect.left, carouselRect.left);
+                    const threshold = rect.width * 0.3;
+                    if (visibleWidth > threshold) {
+                        activeIndex = idx;
+                    }
+                });
+                pipelineDots.querySelectorAll('.dot').forEach((dot, idx) => {
+                    dot.classList.toggle('active', idx === activeIndex);
+                });
+            });
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1474,6 +1725,44 @@
         });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SEND ORDER VIA WEBHOOK
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        sendOrderBtn.addEventListener('click', async function() {
+            const brand = orderBrand.value.trim();
+            const scope = orderScope.value.trim();
+
+            if (!brand || !scope) {
+                showToast('⚠️ Please fill in both Brand and Scope.');
+                return;
+            }
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        brand: brand,
+                        scope: scope,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error ${response.status}`);
+                }
+
+                showToast(`✅ Order for "${brand}" sent to production pipeline.`);
+                orderBrand.value = '';
+                orderScope.value = '';
+            } catch (error) {
+                console.error('Webhook error:', error);
+                showToast('⚠️ Failed to send order. Check console.');
+            }
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // CLOCK + LATENCY
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function updateClock() {
@@ -1530,8 +1819,9 @@
             subscribeTickets();
             subscribeOrders();
             updatePreview();
-            console.log('🔥 HEKSEL STUDIO v5.0 — Production Pipeline engaged');
+            console.log('🔥 HEKSEL STUDIO v5.0 — Production Pipeline engaged (carrossel 3×3)');
             console.log('📡 Listening to tickets & orders collections...');
+            console.log('🔗 Webhook URL:', WEBHOOK_URL);
             console.log('💎 Heksel Imperium — Production ready');
         } catch (err) {
             console.error('Fatal initialization error:', err);
